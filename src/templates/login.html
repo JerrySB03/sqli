@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example SQLi vulnerable site - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="duration-200 ease-out bg-stone-900">
+    <header class="bg-blue-500 flex justify-between p-4">
+        <nav class="flex mx-auto">
+            <div class="flex items-center space-x-8">
+                <a class="ml-4 text-white hover:text-gray-200" href="/">Home</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/signup">Register</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/login">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="mt-24 flex items-center justify-center">
+        <div class="p-8 rounded-lg shadow-2xl bg-zinc-800 mt-24 text-center text-white hover:translate-x-2 hover:-translate-y-0.5 duration-1000 ease-in-out">
+            <h1 class="text-2xl font-bold mb-4">Login</h1>
+            <form onsubmit="login(event)">
+                <div class="mb-4">
+                    <label for="username" class="block font-bold">Username</label>
+                    <input type="text" id="username" class="duration-200 border border-gray-400 bg-neutral-900 rounded py-2 px-4 w-full" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="block font-bold">Password</label>
+                    <input type="password" id="password" class="duration-200 border border-gray-400 bg-neutral-900 rounded py-2 px-4 w-full" required>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function login(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const formData = {
+                username: username,
+                password: password,
+            };
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/profile';
+                    } else if (response.status == 401) {
+                        alert('Špatné jméno nebo heslo');
+                    } else {
+                        alert('Něco se pokazilo');
+                        console.error('Error:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>

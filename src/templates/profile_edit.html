@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+</head>
+
+
+<body class="duration-200 ease-out bg-stone-900">
+    <header class="bg-blue-500 flex justify-between p-4">
+        <nav class="flex mx-auto">
+            <div class="flex items-center space-x-8">
+                <a class="ml-4 text-white hover:text-gray-200" href="/">Home</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/profile">Profile</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/logout">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="flex items-center">
+                <div
+                    class="p-8 rounded-lg shadow-2xl bg-zinc-800 mt-24 text-center text-white hover:-translate-x-2 hover:-translate-y-1 duration-1000 ease-in-out">
+                    <h1 class="text-2xl font-bold mb-4">Your profile</h1>
+                    <div class="mb-4 flex items-center">
+                        <label for="username" class="block font-bold mr-2">Username: </label>
+                        <div class="bg-neutral-900">
+                            <h5 id="username" class="border rounded py-2 px-4 w-full">{{ data.username }}</p>
+                        </div>
+                    </div>
+                    <div class="mb-4 items-center">
+                        <label for="description" class="block font-bold mr-2 whitespace-nowrap">About me</label>
+                        <div class="bg-neutral-900">
+                            <p id="description" class="border rounded py-2 px-4 w-full">{{ data.description }} </h5>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add notes -->
+                <div class="ml-32 mt-80 flex items-center justify-center">
+                    <div
+                        class="p-8 rounded-lg shadow-md bg-zinc-800 text-center text-white hover:translate-x-1 hover:-translate-y-2 duration-1000 ease-in-out">
+                        <h1 class="text-2xl font-bold mb-4">Add note</h1>
+                        <form onsubmit="addNote()">
+                            <div class="mb-4">
+                                <label for="title" class="block font-bold">Title</label>
+                                <input type="text" id="title"
+                                    class="duration-200 border border-gray-400 bg-neutral-900 rounded py-2 px-4 w-full"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="content" class="block font-bold">Content</label>
+                                <textarea id="content"
+                                    class="duration-200 border rounded border-gray-400 bg-neutral-900 py-2 px-4 w-full resize-none overflow-y-hidden"
+                                    rows="1"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="bg-blue-500 border-gray-400 py-2 px-4 duration-200 rounded hover:bg-blue-600">Add
+                                note</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes -->
+            {% if data.notes %}
+            <div class="mt-16 text-center text-white w-full">
+                <div
+                    class="flex justify-center border-2 shadow-lg border-gray-400 mb-16 bg-blue-600 p-8 rounded-lg w-min whitespace-nowrap mx-auto hover:translate-x-3 hover:-translate-y-1 duration-1000 ease-in-out">
+                    <h2 class="text-2xl font-bold">Your notes</h2>
+                </div>
+                <div class="flex items-center space-y-8 justify-center">
+                    <div>
+                        {% for i in range(data.notes|length) %}
+                        {% if i % 2 == 0 %}
+                        <!-- Show on the left -->
+                        <div
+                            class="-ml-64 items-centerp-8 rounded-lg shadow-md bg-zinc-800 text-center text-white w-max hover:-translate-x-3 hover:-translate-y-0.5 duration-1000 ease-out">
+                            <div class="flex justify-between items-center">
+                                <h3 class="ml-6 mt-4 text-2xl font-bold mb-4">{{ data.notes[i].title }}</h3>
+                                <button class="mr-6 mt-2 bg-red-500 text-white p-2 py-2 rounded-full hover:bg-red-600 duration-200" onclick="removeNote({{data.notes[i].id}})">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" class="h-4 w-4">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mb-4">
+                                <h5 class="border rounded py-2 px-4 w-full">{{ data.notes[i].content }}</h5>
+                            </div>
+                        </div>
+                        {% else %}
+                        <!-- Show on the right -->
+                        <div
+                            class="ml-48 p-8 rounded-lg shadow-md bg-zinc-800 text-center text-white w-max hover:translate-x-3 hover:translate-y-0.5 duration-1000 ease-out">
+                            <h3 class="text-2xl font-bold mb-4">{{ data.notes[i].title }}</h3>
+                            <div class="mb-4">
+                                <h5 class="border rounded py-2 px-4 w-full">{{ data.notes[i].content }}</h5>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <script>
+        function addNote() {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+
+            const formData = {
+                title: title,
+                content: content,
+            };
+
+            fetch('/profile/note/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/profile';
+                    } else {
+                        alert('Něco se pokazilo');
+                        console.error('Error:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        function removeNote(i){
+            event.preventDefault();
+            fetch('/note/' + i, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/profile';
+                    } else {
+                        alert('Něco se pokazilo');
+                        console.error('Error:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        autosize(document.querySelector('textarea#content'));
+    </script>
+
+</body>
+
+</html>

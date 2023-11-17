@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{error['code']}} {{error['status']}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="duration-200 ease-out bg-stone-900">
+    <header class="bg-blue-500 flex justify-between p-4">
+        <nav class="flex mx-auto">
+            <div class="flex items-center space-x-8">
+                <a class="ml-4 text-white hover:text-gray-200" href="/">Home</a>
+                {% if data.username %}
+                <a class="ml-4 text-white hover:text-gray-200" href="/profile">Profile</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/logout">Logout</a>
+                {% else %}
+                <a class="ml-4 text-white hover:text-gray-200" href="/signup">Register</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="mt-32 flex items-center justify-center hover:translate-x-3 hover:-translate-y-1 duration-1000 ease-in-out">
+        <div class="p-8 rounded-lg shadow-2xl bg-zinc-800 mt-24 text-center text-white">
+            <h1 class="text-4xl font-bold mb-4">{{error['code']}} {{error['status']}}</h1>
+            <p class="text-lg mb-6">{{error['msg']}}</p>
+            <a href="/" class="px-4 py-2 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-bold">Home page</a>
+        </div>
+    </main>
+</body>
+
+</html>

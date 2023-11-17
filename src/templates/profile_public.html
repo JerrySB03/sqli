@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="duration-200 ease-out bg-stone-900">
+    <header class="bg-blue-500 flex justify-between p-4">
+        <nav class="flex mx-auto">
+            <div class="flex items-center space-x-8">
+                <a class="ml-4 text-white hover:text-gray-200" href="/">Home</a>
+                {% if data.username %}
+                <a class="ml-4 text-white hover:text-gray-200" href="/profile">Profile</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/logout">Logout</a>
+                {% else %}
+                <a class="ml-4 text-white hover:text-gray-200" href="/signup">Register</a>
+                <a class="ml-4 text-white hover:text-gray-200" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="mt-24 flex items-center justify-center">
+        <div class="flex flex-col items-center bg-zinc-800 hover:translate-x-3 hover:-translate-y-1 duration-1000 ease-in-out p-8 rounded-lg shadow-2xl">
+            <h1 class="text-2xl text-white font-bold mb-4">{{ data.username }}'s profile</h1>
+            <div class="mb-4">
+                <label for="username" class="block text-white text-center font-bold">Username</label>
+                <p id="username" class="border text-white rounded py-2 px-4 w-full">{{ data.username }}</p>
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-white text-center font-bold">About me</label>
+                <h5 id="description" class="border text-white rounded py-2 px-4 w-full">{{ data.description|safe }}</h5>
+            </div>
+        </div>
+        
+    </main>
+</body>
+
+</html>
