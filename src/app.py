@@ -207,4 +207,4 @@ def favicon():
 def static_files(path):
     return app.send_static_file(path)
 
-app.run(host='0.0.0.0', port=1337)
+app.run(host='0.0.0.0', port=80)

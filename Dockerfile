@@ -13,6 +13,6 @@ RUN /usr/local/bin/python -m pip install --upgrade pip
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-EXPOSE 1337:80/tcp
+EXPOSE 80/tcp
 
 CMD ["python", "/app/src/app.py"]
