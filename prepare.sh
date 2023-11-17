@@ -2,7 +2,7 @@
 
 # Install dependencies
 sudo apt update
-sudo apt-get install -y python3 wget hydra docker.io
+sudo apt-get install -y python3 wget docker.io
 
 sudo systemctl enable docker --now
 BASE_URL="http://178.16.130.233:8080/files/sqli/"
