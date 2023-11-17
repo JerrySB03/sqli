@@ -6,7 +6,7 @@ WORKDIR /app
 # Install sqlite3
 RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev
 
-COPY src/ /app/
+COPY src/ /app/src/
 COPY requirements.txt /app/
 
 RUN /usr/local/bin/python -m pip install --upgrade pip
